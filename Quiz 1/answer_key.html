@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="مفتاح تصحيح اختبار Linux Administration العملي — المحاضرة 02 + 03 — نسخة للجوال تعمل دون إنترنت">
+<title>مفتاح التصحيح — Practical Quiz · Linux Administration</title>
+<style>
+:root{
+  --bg:#1d2021;--bg2:#282828;--card:#32302f;--card2:#3c3836;
+  --fg:#ebdbb2;--fg2:#d5c4a1;--muted:#a89984;--line:#504945;
+  --yellow:#fabd2f;--orange:#fe8019;--red:#fb4934;--green:#b8bb26;
+  --aqua:#8ec07c;--blue:#83a598;--purple:#d3869b;--gray:#928374;
+  --mono:ui-monospace,"SF Mono","DejaVu Sans Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:system-ui,-apple-system,"Segoe UI",Tahoma,"Noto Naskh Arabic",Arial,sans-serif;
+  font-size:15px;line-height:1.7;overflow-x:hidden;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 12px 44px}
+
+.top{
+  position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:7px;
+  background:rgba(40,40,40,.97);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);padding:8px 12px;
+}
+.top b{color:var(--yellow);font-size:13px;line-height:1.3;white-space:nowrap}
+.top .sp{flex:1}
+.top .tag{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 6px;white-space:nowrap}
+.top .tag i{font-style:normal;color:var(--aqua);font-weight:700}
+
+.hero{padding:16px 4px 6px}
+.hero h1{font-size:21px;line-height:1.4;color:var(--yellow);font-weight:800}
+.hero p{color:var(--fg2);font-size:13.5px;margin-top:7px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.stat span{display:block;font-size:11px;color:var(--muted)}
+.stat b{font-size:16px;color:var(--aqua)}
+.note{
+  background:#2b2a28;border:1px solid var(--line);border-inline-start:3px solid var(--orange);
+  border-radius:8px;padding:10px 12px;margin:14px 0 4px;font-size:13px;color:var(--fg2)
+}
+.note b{color:var(--orange)}
+
+details.task{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:11px 0;overflow:hidden}
+details.task>summary{
+  list-style:none;cursor:pointer;padding:11px 13px;display:flex;align-items:center;gap:10px;
+  background:linear-gradient(180deg,#3a3835,#32302f);
+}
+details.task>summary::-webkit-details-marker{display:none}
+details.task>summary::after{content:"▾";margin-inline-start:auto;color:var(--gray);font-size:14px;transition:.2s}
+details.task[open]>summary::after{transform:rotate(180deg)}
+.num{flex:0 0 auto;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--aqua);color:#1d2021;font-weight:800;font-size:14px}
+details.task>summary h2{font-size:14.5px;font-weight:700;line-height:1.4}
+details.task>summary h2 small{display:block;font-weight:400;font-size:11.5px;color:var(--muted)}
+.body{padding:10px 11px 13px;border-top:1px solid var(--line)}
+
+.step{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:9px 9px 10px;margin:9px 0}
+.step .head{display:flex;align-items:center;gap:7px;margin-bottom:6px;flex-wrap:wrap}
+.step .head .n{
+  flex:0 0 auto;min-width:24px;height:24px;padding:0 6px;border-radius:7px;
+  background:var(--card2);border:1px solid var(--line);color:var(--yellow);
+  font-size:12px;font-weight:700;display:grid;place-items:center
+}
+.step .head .lbl{font-size:12px;color:var(--muted)}
+.step .head .mk{
+  margin-inline-start:auto;font-size:11.5px;font-weight:700;color:#1d2021;
+  background:var(--yellow);border-radius:999px;padding:1px 8px;white-space:nowrap
+}
+pre{
+  direction:ltr;text-align:left;unicode-bidi:isolate;font-family:var(--mono);
+  font-size:12.5px;line-height:1.6;background:#151718;border:1px solid var(--line);
+  border-radius:8px;padding:8px 9px;margin:6px 0;color:var(--green);
+  overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:pre
+}
+pre::-webkit-scrollbar{height:5px}
+pre::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+.out{
+  font-family:var(--mono);font-size:12px;direction:ltr;text-align:left;
+  background:#252322;border:1px dashed var(--line);border-radius:8px;
+  padding:7px 9px;margin:6px 0;color:var(--blue);overflow-x:auto;white-space:pre
+}
+.cap{font-size:11px;color:var(--gray);margin:4px 0 0}
+.warnline{font-size:12.5px;color:var(--fg2);background:#2b2b28;border-inline-start:3px solid var(--red);border-radius:6px;padding:6px 9px;margin-top:7px}
+.warnline b{color:var(--red)}
+.sum{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+.sum b{color:var(--fg)}
+.sum .tot{color:var(--green);font-weight:700}
+
+h3.sec{font-size:15.5px;color:var(--orange);margin:22px 4px 10px;display:flex;align-items:center;gap:8px}
+h2.sec{font-size:16px;color:var(--yellow);margin:26px 4px 6px}
+h3.sub{font-size:14px;color:var(--aqua);margin:14px 0 6px}
+p.note2{font-size:13px;color:var(--muted);margin:0 4px 8px}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:10px;overflow:hidden;font-size:13px}
+th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--card2);color:var(--yellow);font-size:12px;font-weight:700}
+tr:last-child td{border-bottom:0}
+td code,li code,p code,p.note2 code{
+  font-family:var(--mono);font-size:12px;direction:ltr;unicode-bidi:isolate;
+  display:inline-block;background:#151718;border:1px solid var(--line);
+  border-radius:5px;padding:0 4px;color:var(--yellow);white-space:nowrap
+}
+ul.plain{list-style:none;padding:0 4px;font-size:13.5px;color:var(--fg2)}
+ul.plain li{padding:5px 0;border-bottom:1px dashed var(--line)}
+ul.plain li:last-child{border-bottom:0}
+footer{margin-top:26px;padding:14px 4px;border-top:1px solid var(--line);color:var(--gray);font-size:11.5px;text-align:center;line-height:1.9}
+@media (min-width:560px){
+  .grid{grid-template-columns:repeat(4,1fr)}
+  .hero h1{font-size:26px}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <b>مفتاح التصحيح</b>
+  <span class="tag">10 مهام</span>
+  <span class="tag"><i>72</i> خطوة</span>
+  <span class="sp"></span>
+  <span class="tag">10 درجات</span>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>مفتاح تصحيح الاختبار العملي<br>Linux Administration</h1>
+    <p>المحاضرة 02: متغيّرات البيئة · Alias · إعادة التوجيه · الأنابيب وHistory — والمحاضرة 03: الروابط · الصلاحيات · umask · ACL · البتات الخاصة و sudo.</p>
+    <div class="grid">
+      <div class="stat"><span>المهام</span><b>10</b></div>
+      <div class="stat"><span>الخطوات</span><b>72</b></div>
+      <div class="stat"><span>الدرجة الكلية</span><b>10</b></div>
+      <div class="stat"><span>لكل مهمة</span><b>1</b></div>
+    </div>
+    <div class="note">
+      <b>كيف تقرأ هذا المفتاح:</b> كل خطوة مرقّمة هنا تقابل خطوة مرقّمة في شاشة العرض. لكل خطوة الأمر المقبول والناتج المتوقع والدرجة. الحلول المكافئة مقبولة ما لم يُذكر خلاف ذلك، والمسارات تخصّ المستخدم <code>sara</code> فيُقبل <code>$HOME</code> أو أي مسار منزلي آخر. اضغط على عنوان أي مهمة لفتحها أو إغلاقها.
+    </div>
+  </div>
+
+<details class="task" open>
+  <summary><span class="num">1</span><h2>متغيّرات البيئة<small>Environment Variables · 6 خطوات</small></h2></summary>
+  <div class="body">
+
+    <div class="step">
+      <div class="head"><span class="n">1</span><span class="lbl">إنشاء متغيّر محلي</span><span class="mk">0.15</span></div>
+      <pre>SERVICE='atlas'</pre>
+      <div class="out">لا مخرجات</div>
+      <div class="cap">أي مسافة حول <code>=</code> تُفسد الأمر.</div>
+      <div class="warnline"><b>خصم:</b> يُلغى بند الخطوة كاملًا إذا كُتب <code>SERVICE = 'atlas'</code>.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">2</span><span class="lbl">عرض بيئة العمليات</span><span class="mk">0.15</span></div>
+      <pre>env</pre>
+      <div class="out">القائمة لا تحتوي SERVICE</div>
+      <div class="cap">يُقبل <code>printenv</code> بدلًا منه.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">3</span><span class="lbl">تصدير المتغير</span><span class="mk">0.15</span></div>
+      <pre>export SERVICE='atlas-prod'</pre>
+      <div class="out">لا مخرجات</div>
+
+    <div class="step">
+      <div class="head"><span class="n">4</span><span class="lbl">عرض البيئة مرة أخرى</span><span class="mk">0.15</span></div>
+      <pre>env</pre>
+      <div class="out">SERVICE=atlas-prod</div>
+      <div class="cap">ظهر المتغير في البيئة بعد تصديره.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="k">5</span><span class="lbl">الاقتباس المزدوج ثم المفرد</span><span class="mk">0.2</span></div>
+      <pre>echo "$SERVICE"
+echo '$SERVICE'</pre>
+      <div class="out">atlas-prod
+$SERVICE</div>
+      <div class="cap">المزدوج يوسّع المتغير، والمفرد يعرضه حرفيًا.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">6</span><span class="lbl">الحذف والتحقق</span><span class="mk">0.2</span></div>
+      <pre>unset SERVICE
+env</pre>
+      <div class="out">يختفي SERVICE من القائمة</div>
+    </div>
+
+    <div class="sum"><span>مجموع المهمة</span><b class="tot">1.00</b></div>
+  </div>
+</details>
+
+<details class="task">
+  <summary><span class="num">2</span><h2>مسارات البحث والبرنامج المنسوخ<small>Search Paths &amp; Renamed Program · 8 خطوات</small></h2></summary>
+  <div class="body">
+
+    <div class="step">
+      <div class="head"><span class="n">1</span><span class="lbl">إنشاء مجلد الأدوات</span><span class="mk">0.125</span></div>
+      <pre>mkdir ~/tools</pre>
+      <div class="out">لا مخرجات</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">2</span><span class="lbl">نسخ البرنامج باسم جديد</span><span class="mk">0.125</span></div>
+      <pre>cp /usr/bin/wc ~/tools/tally</pre>
+      <div class="out">لا مخرجات — والنسخة تبقى قابلة للتنفيذ</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">3</span><span class="lbl">إضافة المسار في المقدمة</span><span class="mk">0.125</span></div>
+      <pre>PATH="$HOME/tools:$PATH"</pre>
+      <div class="out">لا مخرجات</div>
+      <div class="warnline"><b>خصم:</b> إضافة المسار في <b>نهاية</b> القيمة تُلغي درجة الخطوة.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">4</span><span class="lbl">طباعة PATH</span><span class="mk">0.125</span></div>
+      <pre>echo "$PATH"</pre>
+      <div class="out">/home/sara/tools:/usr/local/bin:/usr/bin:...</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">5</span><span class="lbl">ملف بأربعة أسطر</span><span class="mk">0.125</span></div>
+      <pre>printf "alpha\nbeta\ngamma\ndelta\n" &gt; notes.md</pre>
+      <div class="out">4 أسطر</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">6</span><span class="lbl">تشغيل الأداة بالاسم</span><span class="mk">0.125</span></div>
+      <pre>tally -l notes.md</pre>
+      <div class="out">4</div>
+      <div class="cap">إن ظهر <code>Permission denied</code> فسببه أن بت التنفيذ لم يُنقل؛ يُقبل <code>chmod +x ~/tools/tally</code> كإصلاح.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">7</span><span class="lbl">تحديد موضع البرنامجين</span><span class="mk">0.125</span></div>
+      <pre>which tally
+which wc</pre>
+      <div class="out">/home/sara/tools/tally
+/usr/bin/wc</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">8</span><span class="lbl">تشغيل الأصل بالمسار المطلق</span><span class="mk">0.125</span></div>
+      <pre>/usr/bin/wc -l notes.md</pre>
+      <div class="out">4</div>
+    </div>
+
+    <div class="sum"><span>مجموع المهمة</span><b class="tot">1.00</b></div>
+  </div>
+</details>
+
+<details class="task">
+  <summary><span class="num">3</span><h2>تعريف اختصار دائم<small>A Persistent Alias · 6 خطوات</small></h2></summary>
+  <div class="body">
+
+    <div class="step">
+      <div class="head"><span class="n">1</span><span class="lbl">تعريف الاختصار</span><span class="mk">0.15</span></div>
+      <pre>alias disk='df -h'</pre>
+      <div class="out">لا مخرجات</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">2</span><span class="lbl">تشغيله</span><span class="mk">0.15</span></div>
+      <pre>disk</pre>
+      <div class="out">جدول مساحات الأقراص بصيغة مقروءة</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">3</span><span class="lbl">إضافته إلى ملف الإعداد</span><span class="mk">0.15</span></div>
+      <pre>echo "alias disk='df -h'" &gt;&gt; ~/.bashrc</pre>
+      <div class="out">لا مخرجات</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">4</span><span class="lbl">تطبيقه على الجلسة الحالية</span><span class="mk">0.2</span></div>
+      <pre>source ~/.bashrc</pre>
+      <div class="out">لا مخرجات</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">5</span><span class="lbl">جلسة جديدة</span><span class="mk">0.2</span></div>
+      <pre>bash
+disk</pre>
+      <div class="out">يعمل في الجلسة الجديدة</div>
+      <div class="warnline"><b>خصم:</b> لا تُمنح الدرجة إذا أثبت الاختصار في الجلسة القديمة فقط.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">6</span><span class="lbl">عرض التعريف</span><span class="mk">0.15</span></div>
+      <pre>alias disk</pre>
+      <div class="out">alias disk='df -h'</div>
+    </div>
+
+    <div class="sum"><span>مجموع المهمة</span><b class="tot">1.00</b></div>
+  </div>
+</details>
+
+<details class="task">
+  <summary><span class="num">4</span><h2>إعادة توجيه الإخراج<small>Output Redirection · 8 خطوات</small></h2></summary>
+  <div class="body">
+
+    <div class="step">
+      <div class="head"><span class="n">1</span><span class="lbl">إنشاء ملف من المخرجات</span><span class="mk">0.1</span></div>
+      <pre>ls &gt; audit.log</pre>
+      <div class="out">لا شيء على الشاشة</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">2</span><span class="lbl">إضافة سطر دون محو</span><span class="mk">0.15</span></div>
+      <pre>echo "appended line" &gt;&gt; audit.log</pre>
+      <div class="out">السطر يُضاف في النهاية</div>
+      <div class="warnline"><b>خصم:</b> استخدام <code>&gt;</code> بدل <code>&gt;&gt;</code> يُلغي درجة الخطوة.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">3</span><span class="lbl">فصل الخطأ عن الخرج</span><span class="mk">0.2</span></div>
+      <pre>ls /opt /no-such-team 2&gt; errors.log &gt; output.log</pre>
+      <div class="out">errors.log → رسالة الخطأ
+output.log → محتوى /opt</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">4</span><span class="lbl">دمج النوعين في ملف</span><span class="mk">0.2</span></div>
+      <pre>ls /opt /no-such-team &gt; both.log 2&gt;&amp;1</pre>
+      <div class="out">النتائج ورسالة الخطأ في ملف واحد</div>
+      <div class="warnline"><b>خصم:</b> عكس الترتيب <code>2&gt;&amp;1 &gt; both.log</code> يُلغي درجة الخطوة.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">5</span><span class="lbl">عرض وحفظ في الوقت نفسه</span><span class="mk">0.15</span></div>
+      <pre>ls /opt | tee audit.log</pre>
+      <div class="out">يظهر على الشاشة ويُكتب في الملف</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">6</span><span class="lbl">إضافة لا استبدال</span><span class="mk">0.1</span></div>
+      <pre>ls ~ | tee -a audit.log</pre>
+      <div class="out">يُضاف إلى نهاية الملف</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">7</span><span class="lbl">عرض الملفات الأربعة</span><span class="mk">0.05</span></div>
+      <pre>cat errors.log output.log both.log audit.log</pre>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">8</span><span class="lbl">تعليل الصيغة الخطرة</span><span class="mk">0.05</span></div>
+      <p class="note">الإجابة المقبولة: <code>&gt;</code> يفرّغ الملف <b>لحظة</b> تجهيز التحويل قبل أن يقرأه البرنامج، فتضيع البيانات قبل القراءة. ويُقبل ذكر الحل: ملف إخراج مختلف أو ملف مؤقت.</p>
+      <pre>sort &lt; f &gt; f   ← خطأ</pre>
+    </div>
+
+    <div class="sum"><span>مجموع المهمة</span><b class="tot">1.00</b></div>
+  </div>
+</details>
+
+<details class="task">
+  <summary><span class="num">5</span><h2>الأنابيب وسجل الأوامر<small>Pipes &amp; Command History · 6 خطوات</small></h2></summary>
+  <div class="body">
+
+    <div class="step">
+      <div class="head"><span class="n">1</span><span class="lbl">ملف بأمر واحد</span><span class="mk">0.15</span></div>
+      <pre>printf "api\nauth\nbilling\nsearch\n" &gt; services.txt</pre>
+      <div class="out">4 أسطر</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">2</span><span class="lbl">قراءة من الملف وكتابة في آخر</span><span class="mk">0.2</span></div>
+      <pre>sort &lt; services.txt &gt; sorted.txt</pre>
+      <div class="out">sorted.txt مرتّب أبجديًا</div>
+      <div class="warnline"><b>خصم:</b> <code>sort &lt; services.txt &gt; services.txt</code> يُلغي درجتي الخطوتين 1 و2.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">3</span><span class="lbl">السطر السابع</span><span class="mk">0.2</span></div>
+      <pre>head -n 7 /etc/passwd | tail -n 1</pre>
+      <div class="out">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin  (مثال)</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">4</span><span class="lbl">آخر خمسة أوامر</span><span class="mk">0.15</span></div>
+      <pre>history 5</pre>
+      <div class="out">آخر 5 أحداث مرقّمة</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">5</span><span class="lbl">إعادة تنفيذ برقم</span><span class="mk">0.15</span></div>
+      <pre>!&lt;رقم الحدث&gt;</pre>
+      <div class="out">إعادة تنفيذ الأمر المطلوب</div>
+      <div class="cap">يُقبل أيضًا <code>!!</code> أو <code>!-3</code> حسب المطلوب.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">6</span><span class="lbl">كتابة السجل وعرضه</span><span class="mk">0.15</span></div>
+      <pre>history -w
+head -n 3 ~/.bash_history</pre>
+      <div class="out">3 أسطر من السجل الدائم</div>
+    </div>
+
+    <div class="sum"><span>مجموع المهمة</span><b class="tot">1.00</b></div>
+  </div>
+</details>
+
+<details class="task">
+  <summary><span class="num">6</span><h2>الروابط الصلبة والرمزية<small>Hard &amp; Symbolic Links · 7 خطوات</small></h2></summary>
+  <div class="body">
+
+    <div class="step">
+      <div class="head"><span class="n">1</span><span class="lbl">ملف المصدر</span><span class="mk">0.15</span></div>
+      <pre>echo "port=8080" &gt; app.conf</pre>
+      <div class="out">ملف فيه نص</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">2</span><span class="lbl">الرابط الصلب</span><span class="mk">0.15</span></div>
+      <pre>ln app.conf app.conf.hard</pre>
+      <div class="out">عمود عدد الروابط = 2</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">3</span><span class="lbl">الرابط الرمزي</span><span class="mk">0.15</span></div>
+      <pre>ln -s app.conf app.conf.link</pre>
+      <div class="out">app.conf.link -&gt; app.conf</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">4</span><span class="lbl">عرض التفاصيل</span><span class="mk">0.1</span></div>
+      <pre>ls -l app.conf app.conf.hard app.conf.link</pre>
+      <div class="out">-rw-r--r-- 2 sara sara 11 ... app.conf
+-rw-r--r-- 2 sara sara 11 ... app.conf.hard
+lrwxrwxrwx 1 sara sara  8 ... app.conf.link -&gt; app.conf</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">5</span><span class="lbl">وجهة الرابط</span><span class="mk">0.15</span></div>
+      <pre>readlink app.conf.link
+readlink -f app.conf.link</pre>
+      <div class="out">app.conf
+/home/sara/app.conf</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">6</span><span class="lbl">حذف الأصل وقراءة الاسمين</span><span class="mk">0.15</span></div>
+      <pre>rm app.conf
+cat app.conf.hard
+cat app.conf.link</pre>
+      <div class="out">port=8080
+cat: app.conf.link: No such file or directory</div>
+      <div class="cap">الصلب احتفظ بالبيانات لأن inode ما زال له اسم، والرمزي أصبح مكسورًا.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">7</span><span class="lbl">رابط بهدف نسبي</span><span class="mk">0.15</span></div>
+      <pre>mkdir -p ~/portal
+ln -s ../app.conf ~/portal/conf
+readlink -f ~/portal/conf</pre>
+      <div class="out">/home/sara/app.conf</div>
+      <div class="cap">الهدف النسبي يُفسَّر بالنسبة إلى مجلد <b>الرابط</b> لا مجلد العمل.</div>
+    </div>
+
+    <div class="sum"><span>مجموع المهمة</span><b class="tot">1.00</b></div>
+  </div>
+</details>
+
+<details class="task">
+  <summary><span class="num">7</span><h2>الصلاحيات والملكية<small>Permissions &amp; Ownership · 9 خطوات</small></h2></summary>
+  <div class="body">
+
+    <div class="step">
+      <div class="head"><span class="n">1</span><span class="lbl">الملفات الثلاثة</span><span class="mk">0.1</span></div>
+      <pre>touch deploy.sh notes.md app.conf</pre>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">2</span><span class="lbl">المجلدان</span><span class="mk">0.1</span></div>
+      <pre>mkdir private team</pre>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">3</span><span class="lbl">وضع رقمي على السكربت</span><span class="mk">0.1</span></div>
+      <pre>chmod 741 deploy.sh</pre>
+      <div class="out">-rwxr----x</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">4</span><span class="lbl">وضع رقمي على الإعدادات</span><span class="mk">0.1</span></div>
+      <pre>chmod 604 app.conf</pre>
+      <div class="out">-rw----r--</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">5</span><span class="lbl">إضافة التنفيذ للمالك رمزيًا</span><span class="mk">0.1</span></div>
+      <pre>chmod u+x deploy.sh</pre>
+      <div class="out">لا تغيير ظاهر — لأن 7 تتضمن x أصلًا</div>
+      <div class="cap">الأمر نفسه هو المطلوب، وغياب التغيير هو الناتج الصحيح.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">6</span><span class="lbl">وضع المجلدين</span><span class="mk">0.1</span></div>
+      <pre>chmod 740 private
+chmod 750 team</pre>
+      <div class="out">drwxr-----
+drwxr-x---</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">7</span><span class="lbl">إزالة الكتابة عن المجموعة</span><span class="mk">0.1</span></div>
+      <pre>chmod g-w notes.md</pre>
+      <div class="out">-rw-r--r--</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">8</span><span class="lbl">نقل الملكية</span><span class="mk">0.1</span></div>
+      <pre>sudo chown omar:webops app.conf</pre>
+      <div class="out">المالك omar والمجموعة webops</div>
+      <div class="cap">يُقبل <code>chown omar</code> مع <code>chgrp webops</code>.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">9</span><span class="lbl">العرض وشرح الحقول</span><span class="mk">0.2</span></div>
+      <pre>ls -l deploy.sh notes.md app.conf
+ls -ld private team</pre>
+      <p class="note">شرح مطلوب: نوع الملف، صلاحيات المالك ثم المجموعة ثم الآخرين، عدد الروابط، المالك، المجموعة. الشرح شرط للدرجة.</p>
+    </div>
+
+    <div class="sum"><span>مجموع المهمة</span><b class="tot">1.00</b></div>
+  </div>
+</details>
+
+<details class="task">
+  <summary><span class="num">8</span><h2>الصلاحيات الافتراضية (umask)<small>Default Permissions · 6 خطوات</small></h2></summary>
+  <div class="body">
+
+    <div class="step">
+      <div class="head"><span class="n">1</span><span class="lbl">العرض بالصيغتين</span><span class="mk">0.15</span></div>
+      <pre>umask
+umask -S</pre>
+      <div class="out">0022
+u=rwx,g=rx,o=rx</div>
+      <div class="cap">تُقبل القيمة الأصلية لأي جهاز آخر.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">2</span><span class="lbl">ضبط القناع</span><span class="mk">0.15</span></div>
+      <pre>umask 037</pre>
+      <div class="out">لا مخرجات</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">3</span><span class="lbl">إنشاء وفحص</span><span class="mk">0.25</span></div>
+      <pre>touch f1.txt
+mkdir d1
+ls -l f1.txt
+ls -ld d1</pre>
+      <div class="out">-rw-r-----      (640)
+drwxr-x---      (740)</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">4</span><span class="lbl">قناع آخر</span><span class="mk">0.1</span></div>
+      <pre>umask 067</pre>
+      <div class="out">لا مخرجات</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">5</span><span class="lbl">القناع لا يمنع chmod</span><span class="mk">0.2</span></div>
+      <pre>touch f2.txt
+chmod 666 f2.txt
+ls -l f2.txt</pre>
+      <div class="out">-rw-rw-rw-</div>
+      <div class="cap">القناع يُطبَّق لحظة الإنشاء فقط، وليس قيدًا دائمًا.</div>
+      <div class="warnline"><b>خصم:</b> إلغاء الدرجة إذا قال الطالب إن umask منع chmod.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">6</span><span class="lbl">الاستعادة</span><span class="mk">0.15</span></div>
+      <pre>umask 022
+umask</pre>
+      <div class="out">0022</div>
+    </div>
+
+    <div class="sum"><span>مجموع المهمة</span><b class="tot">1.00</b></div>
+  </div>
+</details>
+
+<details class="task">
+  <summary><span class="num">9</span><h2>قوائم التحكم بالوصول (ACL)<small>Access Control Lists · 8 خطوات</small></h2></summary>
+  <div class="body">
+
+    <div class="step">
+      <div class="head"><span class="n">1</span><span class="lbl">إنشاء وعرض القائمة</span><span class="mk">0.125</span></div>
+      <pre>touch sales-q4.csv
+getfacl sales-q4.csv</pre>
+      <div class="out">user::rw-
+group::r--
+other::r--</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">2</span><span class="lbl">منح مستخدم محدد</span><span class="mk">0.125</span></div>
+      <pre>setfacl -m u:omar:rw- sales-q4.csv</pre>
+      <div class="out">يظهر المدخل user:omar:rw-</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">3</span><span class="lbl">العرض والتحقق من العلامة</span><span class="mk">0.125</span></div>
+      <pre>getfacl sales-q4.csv
+ls -l sales-q4.csv</pre>
+      <div class="out">-rw-rw-r--+ 1 sara sara ... sales-q4.csv</div>
+      <div class="cap">علامة <code>+</code> بعد الصلاحيات تدل على ACL موسّع.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">4</span><span class="lbl">منح مع تقييد القناع</span><span class="mk">0.125</span></div>
+      <pre>setfacl -m u:omar:rwx,m::r-- sales-q4.csv</pre>
+      <div class="out">mask::r--
+user:omar:rwx   #effective:r--</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">5</span><span class="lbl">الصلاحية الفعلية</span><span class="mk">0.125</span></div>
+      <pre>getfacl sales-q4.csv</pre>
+      <div class="out">الصلاحية الفعلية لـ omar = r--</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">6</span><span class="lbl">أثر chmod على القناع</span><span class="mk">0.125</span></div>
+      <pre>chmod g+x sales-q4.csv
+getfacl sales-q4.csv</pre>
+      <div class="out">mask::r-x  ← أُعيد حسابه</div>
+      <div class="warnline"><b>خصم:</b> إلغاء الدرجة إذا لم يلاحظ الطالب تغيّر القناع.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">7</span><span class="lbl">حذف مدخل واحد</span><span class="mk">0.125</span></div>
+      <pre>setfacl -x u:omar sales-q4.csv</pre>
+      <div class="out">يختفي مدخل omar وحده</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">8</span><span class="lbl">إزالة القائمة كاملة</span><span class="mk">0.125</span></div>
+      <pre>setfacl -b sales-q4.csv
+getfacl sales-q4.csv</pre>
+      <div class="out">تعود القائمة الأساسية وتختفي +</div>
+    </div>
+
+    <div class="sum"><span>مجموع المهمة</span><b class="tot">1.00</b></div>
+  </div>
+</details>
+
+<details class="task">
+  <summary><span class="num">10</span><h2>الصلاحيات الخاصة و sudo<small>Special Bits &amp; sudo · 8 خطوات</small></h2></summary>
+  <div class="body">
+
+    <div class="step">
+      <div class="head"><span class="n">1</span><span class="lbl">نسخ برنامج تنفيذي</span><span class="mk">0.15</span></div>
+      <pre>cp /usr/bin/who ~/who2</pre>
+      <div class="out">ملف تنفيذي في مجلد المنزل</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">2</span><span class="lbl">تفعيل SUID</span><span class="mk">0.15</span></div>
+      <pre>chmod 4700 ~/who2
+ls -l ~/who2</pre>
+      <div class="out">-rws------</div>
+      <div class="cap">حرف <code>s</code> في خانة تنفيذ <b>المالك</b>.</div>
+      <div class="warnline"><b>خصم:</b> إلغاء الدرجة إذا طُبِّق البت على ملف غير تنفيذي (مثل ملف touch).</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">3</span><span class="lbl">Sticky Bit</span><span class="mk">0.15</span></div>
+      <pre>sudo mkdir /drops
+sudo chown root:root /drops
+sudo chmod 1770 /drops
+ls -ld /drops</pre>
+      <div class="out">drwxrwx--T</div>
+      <div class="cap">الحرف كبير <code>T</code> لأن الآخرين بلا صلاحية <code>x</code>.</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">4</span><span class="lbl">SGID على مجلد</span><span class="mk">0.15</span></div>
+      <pre>sudo mkdir /staging
+sudo chgrp webops /staging
+sudo chmod 2770 /staging
+ls -ld /staging</pre>
+      <div class="out">drwxrws---</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">5</span><span class="lbl">وراثة المجموعة</span><span class="mk">0.1</span></div>
+      <pre>sudo touch /staging/t.txt
+ls -l /staging/t.txt</pre>
+      <div class="out">المجموعة webops موروثة من SGID</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">6</span><span class="lbl">التحقق من صياغة sudoers</span><span class="mk">0.1</span></div>
+      <pre>sudo visudo -c</pre>
+      <div class="out">/etc/sudoers: parsed OK</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">7</span><span class="lbl">صلاحيات مستخدم إداري</span><span class="mk">0.1</span></div>
+      <pre>sudo -l -U bashir</pre>
+      <div class="out">قائمة السماح أو رسالة الرفض</div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="n">8</span><span class="lbl">إبطال التصريح</span><span class="mk">0.1</span></div>
+      <pre>sudo -k</pre>
+      <div class="out">لا مخرجات</div>
+    </div>
+
+    <div class="sum"><span>مجموع المهمة</span><b class="tot">1.00</b></div>
+  </div>
+</details>
+
+  <h3 class="sec">أخطاء تُخصم من أي مهمة</h3>
+  <table>
+    <thead><tr><th>الخطأ</th><th>الأثر</th></tr></thead>
+    <tbody>
+      <tr><td><code>&gt;</code> بدل <code>&gt;&gt;</code> عند طلب الإضافة</td><td>إلغاء درجة الخطوة</td></tr>
+      <tr><td>إضافة مسار <code>tools</code> إلى نهاية <code>PATH</code> بدل مقدمتها</td><td>إلغاء درجة الخطوة 3 في المهمة 2</td></tr>
+      <tr><td><code>sort &lt; x &gt; x</code></td><td>إلغاء درجتي الخطوتين 1 و2 في المهمة 5</td></tr>
+      <tr><td>تعريف alias في الجلسة دون ملف الإعداد</td><td>صفر في المهمة 3</td></tr>
+      <tr><td>الخلط بين <code>r</code> و<code>x</code> على المجلد</td><td>إلغاء درجة الخطوة المعنية</td></tr>
+      <tr><td>توقّع أن <code>umask</code> يمنع <code>chmod</code> لاحقًا</td><td>إلغاء درجة الخطوة 5 في المهمة 8</td></tr>
+      <tr><td>نسيان أن <code>chmod</code> على المجموعة يعيد حساب ACL mask</td><td>إلغاء درجة الخطوة 6 في المهمة 9</td></tr>
+      <tr><td><code>chmod 4700</code> على ملف غير تنفيذي</td><td>إلغاء درجة الخطوة 2 في المهمة 10</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sec">قواعد التقييم</h3>
+  <ul class="plain">
+    <li>المجموع 10 درجات، درجة واحدة لكل مهمة، و72 خطوة موزّعة عليها.</li>
+    <li>التقييم خطواتي بدرجات جزئية داخل المهمة بدل الصفر أو الواحد، وهذا يمنح تمييزًا أدق بين المستويات المتوسطة.</li>
+    <li>الحلول المكافئة مقبولة: <code>$HOME</code> بدل المسار الكامل، أو <code>printenv</code> بدل <code>env</code>، أو <code>chown</code> + <code>chgrp</code> بدل الصيغة المزدوجة.</li>
+    <li>يُقبل اختلاف أرقام الإصدارات وأسماء المستخدمين الافتراضية في <code>/etc/passwd</code> بين الأجهزة.</li>
+    <li>لا تُمنح درجة خطوة لم تُنفَّذ فعليًا، حتى لو كتب الطالب الأمر صحيحًا دون تشغيله.</li>
+  </ul>
+
+  <footer>
+    مفتاح تصحيح داخلي — لا يُعرض على الطلاب.<br>
+    10 مهام · 72 خطوة · 10 درجات · يعمل دون إنترنت
+  </footer>
+</div>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
